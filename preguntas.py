@@ -12,6 +12,7 @@ Utilice el archivo `data.csv` para resolver las preguntas.
 
 """
 
+import csv
 
 def pregunta_01():
     """
@@ -21,7 +22,15 @@ def pregunta_01():
     214
 
     """
-    return
+    with open('data.csv', encoding='latin1') as fichero_csv:
+        lector = csv.reader(fichero_csv)
+        suma = 0
+        for linea in lector:
+            suma+=int(linea[0][2])
+    print(suma)        
+    return suma
+
+
 
 
 def pregunta_02():
@@ -39,7 +48,18 @@ def pregunta_02():
     ]
 
     """
-    return
+    with open('data.csv', encoding='latin1') as fichero_csv:
+        lector = csv.reader(fichero_csv)
+        letras = ["A","B","C","D","E"]
+        listaLetras = []
+        frecuenciaLetras = []
+        for linea in lector:
+            listaLetras.append(linea[0][0])
+        for letra in letras:
+            frecuenciaLetras.append(listaLetras.count(letra))
+    a = list(zip(letras, frecuenciaLetras))       
+    return a
+
 
 
 def pregunta_03():
@@ -57,7 +77,30 @@ def pregunta_03():
     ]
 
     """
-    return
+    with open('data.csv', encoding='latin1') as fichero_csv:
+        lector = csv.reader(fichero_csv)
+        sumaA = 0
+        sumaB = 0
+        sumaC = 0
+        sumaD = 0
+        sumaE = 0
+        for linea in lector:
+            if linea[0][0] == "A":
+                sumaA+=int(linea[0][2])
+
+            if linea[0][0] == "B":
+                sumaB+=int(linea[0][2])
+
+            if linea[0][0] == "C":
+                sumaC+=int(linea[0][2])
+
+            if linea[0][0] == "D":
+                sumaD+=int(linea[0][2])
+
+            if linea[0][0] == "E":
+                sumaE+=int(linea[0][2])
+    a = [("A",sumaA),("B",sumaB),("C",sumaC),("D",sumaD),("E",sumaE)]
+    return a
 
 
 def pregunta_04():
@@ -82,7 +125,25 @@ def pregunta_04():
     ]
 
     """
-    return
+    with open('data.csv', encoding='latin1') as fichero_csv:
+        lector = csv.reader(fichero_csv)
+        listaNumeros = []
+        Numeros = ["01","02","03","04","05","06","07","08","09","10","11","12"]
+        frecuenciaNumeros = []
+        for linea in lector:
+            if linea[0][9] == "0":
+                a = "0"+linea[0][10]
+                listaNumeros.append(a)
+            else:
+                a = "1"+linea[0][10]
+                listaNumeros.append(a)
+        for numero in Numeros:
+            frecuenciaNumeros.append(listaNumeros.count(numero))
+
+    a = list(zip(Numeros, frecuenciaNumeros))
+    return a
+
+
 
 
 def pregunta_05():
@@ -100,8 +161,51 @@ def pregunta_05():
     ]
 
     """
-    return
+    with open('data.csv', encoding='latin1') as fichero_csv:
+        lector = csv.reader(fichero_csv)
+        maxA = 0
+        minA = 10
+        maxB = 0
+        minB = 10
+        maxC = 0
+        minC = 10
+        maxD = 0
+        minD = 10
+        maxE = 0
+        minE = 10
+        for linea in lector:
+            if linea[0][0] == "A":
+                if int(linea[0][2]) < minA:
+                    minA = int(linea[0][2])
+                if int(linea[0][2]) > maxA:
+                    maxA = int(linea[0][2])
 
+            if linea[0][0] == "B":
+                if int(linea[0][2]) < minB:
+                    minB = int(linea[0][2])
+                if int(linea[0][2]) > maxB:
+                    maxB = int(linea[0][2])
+
+            if linea[0][0] == "C":
+                if int(linea[0][2]) < minC:
+                    minC = int(linea[0][2])
+                if int(linea[0][2]) > maxC:
+                    maxC = int(linea[0][2])
+
+            if linea[0][0] == "D":
+                if int(linea[0][2]) < minD:
+                    minD = int(linea[0][2])
+                if int(linea[0][2]) > maxD:
+                    maxD = int(linea[0][2])
+
+            if linea[0][0] == "E":
+                if int(linea[0][2]) < minE:
+                    minE = int(linea[0][2])
+                if int(linea[0][2]) > maxE:
+                    maxE = int(linea[0][2])
+
+    a = [("A",maxA,minA),("B",maxB,minB),("C",maxC,minC),("D",maxD,minD),("E",maxE,minE)]
+    return a
 
 def pregunta_06():
     """
@@ -125,7 +229,34 @@ def pregunta_06():
     ]
 
     """
-    return
+    with open("./data.csv", "r") as file:
+        datos = file.readlines()
+    datoscsv = [line.replace("\n", "") for line in datos]
+    datosLimpios = [line.split("\t") for line in datoscsv]
+    listaKeys = []
+    listaT = []
+    listaMax = []
+    listaMin = []
+
+    for dato in datosLimpios:
+        res = []
+        for sub in dato[4].split(','):
+            if ':' in sub:
+                res.append(map(str.strip, sub.split(':', 1)))
+        res = dict(res)
+        for k in res.keys():
+            letra = k
+            if letra in listaKeys:
+                val = listaKeys.index(letra)
+                listaT[val].append(int(res[k]))
+            else:
+                listaKeys.append(letra)
+                listaT.append([int(res[k])])
+    for ele in listaT:
+        listaMax.append(max(ele))
+        listaMin.append(min(ele))
+    lista = list(zip(listaKeys, listaMin, listaMax))
+    return sorted(lista, key=lambda tup: tup[0])
 
 
 def pregunta_07():
@@ -149,7 +280,51 @@ def pregunta_07():
     ]
 
     """
-    return
+    with open('data.csv', encoding='latin1') as fichero_csv:
+        lector = csv.reader(fichero_csv)
+        letra0 = []
+        letra1 = []
+        letra2 = []
+        letra3 = []
+        letra4 = []
+        letra5 = []
+        letra6 = []
+        letra7 = []
+        letra8 = []
+        letra9 = []
+        for linea in lector:
+            if int(linea[0][2]) == 0:
+                letra0.append(linea[0][0])
+
+            if int(linea[0][2]) == 1:
+                letra1.append(linea[0][0])
+
+            if int(linea[0][2]) == 2:
+                letra2.append(linea[0][0])
+
+            if int(linea[0][2]) == 3:
+                letra3.append(linea[0][0])
+
+            if int(linea[0][2]) == 4:
+                letra4.append(linea[0][0])
+
+            if int(linea[0][2]) == 5:
+                letra5.append(linea[0][0])
+
+            if int(linea[0][2]) == 6:
+                letra6.append(linea[0][0])
+
+            if int(linea[0][2]) == 7:
+                letra7.append(linea[0][0])
+
+            if int(linea[0][2]) == 8:
+                letra8.append(linea[0][0])
+
+            if int(linea[0][2]) == 9:
+                letra9.append(linea[0][0])
+    a = [(0,letra0),(1,letra1),(2,letra2),(3,letra3),(4,letra4),(5,letra5),(6,letra6),(7,letra7),(8,letra8),(9,letra9)]
+    return a
+
 
 
 def pregunta_08():
@@ -174,7 +349,52 @@ def pregunta_08():
     ]
 
     """
-    return
+    with open('data.csv', encoding='latin1') as fichero_csv:
+        lector = csv.reader(fichero_csv)
+        letra0 = []
+        letra1 = []
+        letra2 = []
+        letra3 = []
+        letra4 = []
+        letra5 = []
+        letra6 = []
+        letra7 = []
+        letra8 = []
+        letra9 = []
+        for linea in lector:
+            if int(linea[0][2]) == 0:
+                letra0.append(linea[0][0])
+
+            if int(linea[0][2]) == 1:
+                letra1.append(linea[0][0])
+
+            if int(linea[0][2]) == 2:
+                letra2.append(linea[0][0])
+
+            if int(linea[0][2]) == 3:
+                letra3.append(linea[0][0])
+
+            if int(linea[0][2]) == 4:
+                letra4.append(linea[0][0])
+
+            if int(linea[0][2]) == 5:
+                letra5.append(linea[0][0])
+
+            if int(linea[0][2]) == 6:
+                letra6.append(linea[0][0])
+
+            if int(linea[0][2]) == 7:
+                letra7.append(linea[0][0])
+
+            if int(linea[0][2]) == 8:
+                letra8.append(linea[0][0])
+
+            if int(linea[0][2]) == 9:
+                letra9.append(linea[0][0])
+    a = [(0,sorted(list(set(letra0)))),(1,sorted(list(set(letra1)))),(2,sorted(list(set(letra2)))),(3,sorted(list(set(letra3)))),(4,sorted(list(set(letra4)))),(5,sorted(list(set(letra5)))),(6,sorted(list(set(letra6)))),(7,sorted(list(set(letra7)))),(8,sorted(list(set(letra8)))),(9,sorted(list(set(letra9))))]
+    return a
+
+
 
 
 def pregunta_09():
@@ -197,8 +417,33 @@ def pregunta_09():
     }
 
     """
-    return
+    with open("./data.csv", "r") as file:
+        datos = file.readlines()
+    datoscsv = [line.replace("\n", "") for line in datos]
+    datosLimpios = [line.split("\t") for line in datoscsv]
+    listaKeys = []
+    listaT = []
+    listaN = []
 
+    for dato in datosLimpios:
+        res = []
+        for sub in dato[4].split(','):
+            if ':' in sub:
+                res.append(map(str.strip, sub.split(':', 1)))
+        res = dict(res)
+        for k in res.keys():
+            letra = k
+            if letra in listaKeys:
+                val = listaKeys.index(letra)
+                listaT[val].append(int(res[k]))
+            else:
+                listaKeys.append(letra)
+                listaT.append([int(res[k])])
+    for ele in listaT:
+        listaN.append(len(ele))
+    lista = dict(zip(listaKeys, listaN))
+    return lista
+    
 
 def pregunta_10():
     """
@@ -218,8 +463,26 @@ def pregunta_10():
 
 
     """
-    return
+    with open("./data.csv", "r") as file:
+        datos = file.readlines()
+    datoscsv = [line.replace("\n", "") for line in datos]
+    datosLimpios = [line.split("\t") for line in datoscsv]
+    listaKeys = []
+    listaA = []
+    listaD = []
+    for dato in datosLimpios:
+        res = []
+        listaKeys.append(dato[0])
+        lista = dato[3].split(',')
+        listaA.append(len(lista))
+        for sub in dato[4].split(','):
+            if ':' in sub:
+                res.append(map(str.strip, sub.split(':', 1)))
+        res = dict(res)
+        listaD.append(len(res))
 
+    lista = list(zip(listaKeys, listaA, listaD))
+    return lista
 
 def pregunta_11():
     """
@@ -239,7 +502,21 @@ def pregunta_11():
 
 
     """
-    return
+    with open("./data.csv", "r") as file:
+        datos = file.readlines()
+    datoscsv = [line.replace("\n", "") for line in datos]
+    datosLimpios = [line.split("\t") for line in datoscsv]
+    diccio = {}
+    for dato in datosLimpios:
+        valor = int(dato[1])
+        for letra in dato[3].split(','):
+            if letra in diccio:
+                diccio[letra] += valor
+            else:
+                diccio[letra] = valor
+    return diccio
+
+   
 
 
 def pregunta_12():
@@ -257,4 +534,22 @@ def pregunta_12():
     }
 
     """
-    return
+    with open("./data.csv", "r") as file:
+        datos = file.readlines()
+    datoscsv = [line.replace("\n", "") for line in datos]
+    datosLimpios = [line.split("\t") for line in datoscsv]
+    diccio = {}
+    for dato in datosLimpios:
+        res = []
+        letra = dato[0]
+        for sub in dato[4].split(','):
+            if ':' in sub:
+                res.append(map(str.strip, sub.split(':', 1)))
+        res = dict(res)
+        res = dict([a, int(x)] for a, x in res.items())
+        valor = sum(res.values())
+        if letra in diccio:
+            diccio[letra] += valor
+        else:
+            diccio[letra] = valor
+    return diccio
